@@ -17,9 +17,9 @@ Allows you to use your private GitHub repo for Azure Linked ARM templates.
 
 ## To call the Azuze Function
 - Press the "Get function URL" in the Azure Portal
-- e.g. https://{removed}.azurewebsites.net/api/{removed}?code=<<removed>>
+- e.g. https://{removed}.azurewebsites.net/api/{removed}?code={removed}
 - Add the query string &location={raw url in GitHub}
-- Sample: https://{removed}.azurewebsites.net/api/{removed}?code=<<removed>>&location=https://raw.githubusercontent.com/AdamPaternostro/GitHub-Azure-Function-Proxy-for-ARM-Template/master/README.md
+- Sample: https://{removed}.azurewebsites.net/api/{removed}?code={removed}&location=https://raw.githubusercontent.com/AdamPaternostro/GitHub-Azure-Function-Proxy-for-ARM-Template/master/README.md
 - You can test this in a browser window
 
 ## To Run via command line (Linux)
