@@ -18,7 +18,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/adampaternostro/Azure-Sample-ARM-Template-Architecture/master/nested/azuredeploy.storage.json",
+                    "uri": "https://githubproxy.azurewebsites.net/api/GitHubProxy?code={REMOVED}&location=https://raw.githubusercontent.com/adampaternostro/Azure-Sample-ARM-Template-Architecture/master/nested/azuredeploy.storage.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
