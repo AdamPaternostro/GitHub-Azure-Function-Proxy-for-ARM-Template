@@ -1,5 +1,5 @@
 # GitHub-Azure-Function-Proxy-for-ARM-Template
-ARM templates expect a public URL to download your templates.  This allows you to use your private GitHub repo for Azure Linked ARM templates.  The Azure Function is basically a proxy to GitHub (or change for your source control provider).
+ARM templates expect a public URL to download your templates.  This allows you to use your private GitHub repo for Azure Linked ARM templates.  The Azure Function is basically a proxy to GitHub.  You can edit the Azure Function for your source control provider of choice.
 
 ## Create the Azure Function
 1. Create an Azure Function of type .NET named GitHubProxy
