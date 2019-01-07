@@ -16,7 +16,16 @@ public static async Task<IActionResult> Run(Microsoft.AspNetCore.Http.HttpReques
     {
         log.LogInformation("BEGIN: GitHub Proxy Request");
         
-        string personalAcccessToken = "{REMOVED}";
+        string personalAcccessToken = string.Empty;
+        if (Environment.GetEnvironmentVariable("GitHubAccessToken") != null)
+        {
+            personalAcccessToken = Environment.GetEnvironmentVariable("GitHubAccessToken");
+        } else
+        {
+            throw new Exception("Environment Variable is missing");
+        }
+        
+        
         string responseBody = "";
 
         string location = req.Query["location"];
