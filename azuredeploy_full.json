@@ -1,0 +1,132 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "ApplicationStorageAccount": {
+            "minLength": 3,
+            "maxLength": 24,
+            "type": "string",
+            "metadata": {
+				"description": "Storage Account for the function app"
+			}
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Location for all resources."
+            }
+        },
+        "functionAppName": {
+            "type": "string",
+            "minLength": 14,
+            "maxLength": 60,
+            "metadata": {
+                "description": "The Function Application Name"
+              }
+        },
+        "functionHostingPlanName": {
+            "type": "string",
+            "minLength": 14,
+            "maxLength": 60,
+            "metadata": {
+                "description": "The Function Application Name"
+              }
+        },
+        "GitHubAccessToken": {
+            "type": "string",
+            "metadata": {
+                "description": "Access token with repository access to GitHub. Used by the function app to perform proxying"
+              }
+        }
+    },
+    "variables": {
+    },
+    "resources": [
+        {
+            "comments": "Storage account for the function app",
+            "type": "Microsoft.Storage/storageAccounts",
+            "sku": {
+              "name": "Standard_LRS",
+              "tier": "Standard"
+            },
+            "kind": "StorageV2",
+            "name": "[parameters('ApplicationStorageAccount')]",
+            "apiVersion": "2018-02-01",
+            "location": "[resourceGroup().location]",
+            "tags": {
+              
+            },
+            "scale": null,
+            "properties": {
+              "networkAcls": {
+                "bypass": "AzureServices",
+                "virtualNetworkRules": [
+                ],
+                "ipRules": [
+                ],
+                "defaultAction": "Allow"
+              },
+              "supportsHttpsTrafficOnly": true,
+              "encryption": {
+                "services": {
+                  "file": {
+                    "enabled": true
+                  },
+                  "blob": {
+                    "enabled": true
+                  }
+                },
+                "keySource": "Microsoft.Storage"
+              },
+              "accessTier": "Hot"
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Consumption Plan",
+            "type": "Microsoft.Web/serverfarms",
+            "kind": "functionapp",
+            "name": "[parameters('functionHostingPlanName')]",
+            "apiVersion": "2015-04-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "name": "[parameters('functionHostingPlanName')]",
+                "computeMode": "Dynamic",
+                "sku": "Dynamic"
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Function Application",
+            "type": "Microsoft.Web/sites",
+            "kind": "functionapp",
+            "name": "[parameters('functionAppName')]",
+            "apiVersion": "2016-08-01",
+            "location": "[parameters('location')]",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('functionHostingPlanName'))]",
+                "siteConfig": {
+                    "appSettings": [
+                        {
+                            "name": "FUNCTIONS_EXTENSION_VERSION",
+                            "value": "~2"
+                        },
+                        {
+                            "name": "GitHubAccessToken",
+                            "value": "[parameters('GitHubAccessToken')]"
+                        }
+                    ]
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', parameters('functionHostingPlanName'))]"
+            ]
+        }
+    ],
+    "outputs": {
+    }
+}
